@@ -1,0 +1,89 @@
+DO THIS BEFORE YOU RUN ANYTHING:
+--------------------------------
+
+$ mex cc_col_nz.c
+
+If this doesn't work,
+
+$ cp cc_col_nz_supersededByMex.m cc_col_nz.m
+
+but this will be slower. 
+Note that using "mex" might require
+linking to strange matlab libraries. 
+In CMU, this works (if required):
+
+$ export LD_LIBRARY_PATH=/afs/cs/local/matlab/i386_linux2/6.5/lib/matlab6/extern/lib/glnx86:
+$LD_LIBRARY_PATH
+
+
+
+
+The standard approach is:
+----------------------------------------------------------------------------
+
+
+(1) Load in the binary adjacency matrix A: from-to node pairs with node id's starting from 1
+	
+Load in the binary feature matrix F: node to feature indicators
+
+
+
+(2) Find the clusters:
+    >> [k,l,Nx,Ny,Qx,Qy,Dnz, DnzF, cA, c2] = cc_search_duo(A,F,name);
+           
+// k is the number of node clusters.
+	       
+// l is the number of feature clusters
+	       
+// Nx is the number of nodes per node cluster
+	       
+// Ny is the number of features per feature cluster 
+	       
+// Qx is the vector of node clusters that each node belongs to
+	       
+// Qy is the vector of feature clusters that each feature belongs to
+	       
+// Dnz is the number of nonzeros in each "block" of the reordered adjacency matrix.
+		   
+// DnzF is the number of nonzeros in each "block" of the reordered feature matrix.
+		   
+// cA is the total cost in bits
+		   
+
+
+(3) To print out the clusters:
+	    
+>>  [nx ny] = size(F);
+	    
+>> 	[Px, Py] = cc_perm_cohesive(k, l, Qx, Qy, F);
+
+			
+F2 = F(Px,Py);
+			 
+figure;
+			 
+plot_binary_duo(F2,1,3);
+			 
+plot_cluster_grid(nx, ny, Nx, Ny);
+			 			 
+			
+A2 = A(Px,Px);
+			 
+figure;
+			 
+plot_binary_duo(A2,1,1);
+			 
+plot_cluster_grid(nx, nx, Nx, Nx);
+
+	   
+
+For a demo: (on the Reality Mining "Phone-Call" data)
+----------------------------------------------------------------------------
+You can use/analyze the test_reality.m file
+Run with 
+>> [cA A2 F2] = test_reality('call', 1, inf);
+
+
+
+
+Contact for questions/comments: lakoglu@cs.cmu.edu

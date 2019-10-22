@@ -1,0 +1,10 @@
+1 Randomwalk 1371.131806
+1 Clustering 25.315036
+2 Increment 928.492149
+2 Clustering 71.138010
+3 Increment 927.364400
+3 Clustering 65.741584
+4 Increment 927.372760
+4 Clustering 0.006312
+
+Total    4316.562056
